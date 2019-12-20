@@ -38,6 +38,7 @@
             this.BrowseBtn = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.checkBox_Tracking = new System.Windows.Forms.CheckBox();
+            this.checkBox_CopyRoi = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -51,7 +52,7 @@
             // 
             // ProcessBtn
             // 
-            this.ProcessBtn.Location = new System.Drawing.Point(159, 161);
+            this.ProcessBtn.Location = new System.Drawing.Point(159, 186);
             this.ProcessBtn.Name = "ProcessBtn";
             this.ProcessBtn.Size = new System.Drawing.Size(75, 23);
             this.ProcessBtn.TabIndex = 1;
@@ -110,7 +111,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(13, 138);
+            this.progressBar1.Location = new System.Drawing.Point(13, 163);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(365, 16);
             this.progressBar1.TabIndex = 8;
@@ -121,18 +122,32 @@
             this.checkBox_Tracking.AutoSize = true;
             this.checkBox_Tracking.Checked = true;
             this.checkBox_Tracking.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Tracking.Location = new System.Drawing.Point(145, 110);
+            this.checkBox_Tracking.Location = new System.Drawing.Point(145, 135);
             this.checkBox_Tracking.Name = "checkBox_Tracking";
             this.checkBox_Tracking.Size = new System.Drawing.Size(104, 17);
             this.checkBox_Tracking.TabIndex = 9;
             this.checkBox_Tracking.Text = "Enable Tracking";
             this.checkBox_Tracking.UseVisualStyleBackColor = true;
             // 
+            // checkBox_CopyRoi
+            // 
+            this.checkBox_CopyRoi.AutoSize = true;
+            this.checkBox_CopyRoi.Checked = true;
+            this.checkBox_CopyRoi.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_CopyRoi.Location = new System.Drawing.Point(145, 112);
+            this.checkBox_CopyRoi.Name = "checkBox_CopyRoi";
+            this.checkBox_CopyRoi.Size = new System.Drawing.Size(70, 17);
+            this.checkBox_CopyRoi.TabIndex = 10;
+            this.checkBox_CopyRoi.Text = "Crop ROI";
+            this.checkBox_CopyRoi.UseVisualStyleBackColor = true;
+            this.checkBox_CopyRoi.CheckedChanged += new System.EventHandler(this.checkBox_CopyRoi_CheckedChanged);
+            // 
             // MainFormCroper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 192);
+            this.ClientSize = new System.Drawing.Size(390, 237);
+            this.Controls.Add(this.checkBox_CopyRoi);
             this.Controls.Add(this.checkBox_Tracking);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.BrowseBtn);
@@ -166,5 +181,6 @@
         private System.Windows.Forms.Button BrowseBtn;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.CheckBox checkBox_Tracking;
+        private System.Windows.Forms.CheckBox checkBox_CopyRoi;
     }
 }

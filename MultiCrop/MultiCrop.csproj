@@ -24,14 +24,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Users\GDanovski\AppData\Roaming\CellToolPlugIns\</OutputPath>
+    <OutputPath>C:\Users\georg\AppData\Roaming\CellToolPlugIns\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BitMiracle.LibTiff.NET">
-      <HintPath>..\..\Cell Tool\Cell Tool\bin\Debug\BitMiracle.LibTiff.NET.dll</HintPath>
+      <HintPath>..\..\Cell Tool 3\References\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
     <Reference Include="CellToolDK">
       <HintPath>..\..\CellToolDK\CellToolDK\bin\Debug\CellToolDK.dll</HintPath>

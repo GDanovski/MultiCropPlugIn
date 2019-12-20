@@ -15,8 +15,10 @@ namespace MultiCrop
     public partial class MainFormCroper : Form
     {
         private TifFileInfo fi;
+        private bool CropRoi { get; set; }
         public MainFormCroper(TifFileInfo fi)
         {
+            CropRoi = true;
             this.fi = fi;
             InitializeComponent();
         }
@@ -104,6 +106,8 @@ namespace MultiCrop
         }
         private void TrackCropToolStripMenuItem_click(ROI roi, string dir)
         {
+            ROI roi1 = roi.Duplicate();
+
             roi = ROITransformer.ROIEditor.TransformToRect(fi, roi);
             if (roi == null) return;
 
@@ -173,6 +177,12 @@ namespace MultiCrop
 
             newFI.loaded = true;
             newFI.original = false;
+
+            if (CropRoi)
+            {
+                RecalculateOriginalROI(roi1, newFI, locs);
+            }
+
             FileEncoder.SaveTif(newFI, dir);
             fi.available = true;
 
@@ -184,7 +194,7 @@ namespace MultiCrop
                 TrackCropToolStripMenuItem_click(roi, dir);
                 return;
             }
-
+            
             fi.available = false;
             TifFileInfo newFI = null;
 
@@ -282,7 +292,7 @@ namespace MultiCrop
                     }
                     break;
             }
-
+          
             //crop the rectangle
             newFI = DuplicateFI(fi);
             newFI.Dir = newFI.Dir.Substring(0, newFI.Dir.LastIndexOf(".")) + "_ROI"
@@ -290,14 +300,14 @@ namespace MultiCrop
 
             newFI.sizeX = rect.Width;
             newFI.sizeY = rect.Height;
+
             newFI.xCompensation = rect.X;
             newFI.yCompensation = rect.Y;
-
+            
             newFI.imageCount = fi.imageCount;
             newFI.openedImages = newFI.imageCount;
             AddEmptyArraysToFI(newFI);
-
-
+            
             switch (fi.bitsPerPixel)
             {
                 case 8:
@@ -338,8 +348,13 @@ namespace MultiCrop
 
             newFI.loaded = true;
             newFI.original = false;
-            FileEncoder.SaveTif(newFI, dir);
+            if (CropRoi)
+            {
+                ROI roi1 = roi.Duplicate();
+                RecalculateOriginalROI(roi1, newFI);
+            }
             fi.available = true;
+            FileEncoder.SaveTif(newFI, dir);           
 
         }
         private TifFileInfo DuplicateFI(TifFileInfo fi)
@@ -415,6 +430,58 @@ namespace MultiCrop
                 fi.tracking_Speed[i] = 5;
             }
             #endregion Segmentation variables
+        }
+        public static void RecalculateOriginalROI(ROI original, TifFileInfo newFI, Point[] locs = null)
+        {
+            ROI roiOut = original.Duplicate();
+            
+            int max = roiOut.Type == 0 ? 1 : newFI.imageCount;
+
+            for (int i = 0; i < max; i += newFI.sizeC)
+            {
+                var points = roiOut.GetLocation(i + newFI.cValue);
+                Point newP = locs == null? new Point(newFI.xCompensation, newFI.yCompensation):locs[i];
+                Point p;
+                
+                for (int ind = 0; ind < points.Length; ind++)
+                {
+                    p = points[ind];
+
+                    p.X = p.X - newP.X;
+                    p.Y = p.Y - newP.Y;
+                    points[ind] = p;
+                }
+
+                roiOut.SetLocation(i, points);
+            }
+
+            newFI.roiList = new List<ROI>[newFI.sizeC];
+            for (int c = 0; c < newFI.sizeC; c++)
+            {
+                newFI.roiList[c] = new List<ROI>();
+            }
+
+            newFI.roiList[0].Add(roiOut);
+
+            if (newFI.sizeC > 1)
+                for (int c = 1; c < newFI.sizeC; c++)
+                {
+                    ROI newROI = roiOut.Duplicate();
+
+                    for (int i = 0; i < newFI.imageCount; i += newFI.sizeC)
+                    {
+                        var points = original.GetLocation(i);
+
+                        newROI.SetLocation(i + c, points);
+                    }
+
+                    newFI.roiList[c].Add(newROI);
+                }
+        }
+        
+        private void checkBox_CopyRoi_CheckedChanged(object sender, EventArgs e)
+        {
+            CropRoi = ((CheckBox)sender).Checked;
         }
     }
 }

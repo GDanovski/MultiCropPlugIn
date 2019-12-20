@@ -221,7 +221,10 @@ namespace MultiCrop
                 {
                     if (roiList != null)
                         foreach (ROI roi in roiList)
-                            vals.Add("roi.new->" + roi_new(c, roi));
+                        {
+                            string str = "roi.new->" + roi_new(c, roi);
+                            vals.Add(str);
+                        }
                     c++;
                 }
                 //it is important FilterHistory to be the last
