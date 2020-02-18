@@ -60,7 +60,7 @@ namespace MultiCrop
                 MessageBox.Show("Output directory not set!");
                 return;
             }
-            ((Button)sender).Visible = false;
+          
             //prepare settings
             string dir = DirTB.Text;
             string prefix = "cell" + ClassTB.Text;
@@ -70,7 +70,17 @@ namespace MultiCrop
 
             //foreach roi
             List<ROI> roiList = fi.roiList[fi.cValue];
-
+            //Check for overriting files
+            if(checkForExistingFiles(roiList, dir, prefix, suffix))
+            {
+                if (MessageBox.Show(
+                    "Existing files with the same name!\nDo you want to replace them?",
+                    "Overwrite warning", 
+                    MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+            }
+            ((Button)sender).Visible = false;
+            //create bgw
             var bgw = new BackgroundWorker();
             bgw.WorkerReportsProgress = true;
             //Add event for projection here
@@ -101,8 +111,14 @@ namespace MultiCrop
             progressBar1.Maximum = roiList.Count;
             progressBar1.Minimum = 0;
             progressBar1.Visible = true;
-            bgw.RunWorkerAsync();
-            
+            bgw.RunWorkerAsync();            
+        }
+        private bool checkForExistingFiles(List<ROI> roiList,string dir, string prefix,string suffix)
+        {
+            for (int i = 0; i < roiList.Count; i++)
+                if (roiList[i].Checked == true && File.Exists(dir + "\\" + prefix + (i + 1).ToString() + suffix))
+                    return true;
+            return false;
         }
         private void TrackCropToolStripMenuItem_click(ROI roi, string dir)
         {
@@ -470,7 +486,7 @@ namespace MultiCrop
 
                     for (int i = 0; i < newFI.imageCount; i += newFI.sizeC)
                     {
-                        var points = original.GetLocation(i);
+                        var points = roiOut.GetLocation(i);
 
                         newROI.SetLocation(i + c, points);
                     }
