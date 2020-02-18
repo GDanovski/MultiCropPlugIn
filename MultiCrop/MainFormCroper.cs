@@ -89,7 +89,7 @@ namespace MultiCrop
                 for (int i = 0; i < roiList.Count; i++)
                     if (roiList[i].Checked == true)
                     {
-                        CropToolStripMenuItem_click(roiList[i], dir + "\\" + prefix + (i + 1).ToString() + suffix);
+                        CropToolStripMenuItem_click(roiList[i], StringToDir(dir + "\\" + prefix + (i + 1).ToString() + suffix));
                         
                         ((BackgroundWorker)o).ReportProgress(i + 1);
                     }
@@ -113,10 +113,29 @@ namespace MultiCrop
             progressBar1.Visible = true;
             bgw.RunWorkerAsync();            
         }
+        public static string StringToDir(string input)
+        {
+            string output = "";
+
+            switch (System.Environment.OSVersion.Platform)
+            {
+                case PlatformID.MacOSX:
+                    output = input.Replace("\\", "/");
+                    break;
+                case PlatformID.Unix:
+                    output = input.Replace("\\", "/");
+                    break;
+                default:
+                    output = input.Replace("/", "\\");
+                    break;
+            }
+
+            return output;
+        }
         private bool checkForExistingFiles(List<ROI> roiList,string dir, string prefix,string suffix)
         {
             for (int i = 0; i < roiList.Count; i++)
-                if (roiList[i].Checked == true && File.Exists(dir + "\\" + prefix + (i + 1).ToString() + suffix))
+                if (roiList[i].Checked == true && File.Exists(StringToDir(dir + "\\" + prefix + (i + 1).ToString() + suffix)))
                     return true;
             return false;
         }
