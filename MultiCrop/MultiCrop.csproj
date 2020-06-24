@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\CellTool\PlugIns\</OutputPath>
+    <OutputPath>..\..\..\NewCellTool\Cell Tool 3\bin\Release\PlugIns\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BitMiracle.LibTiff.NET">
-      <HintPath>..\..\Cell Tool 3\References\BitMiracle.LibTiff.NET.dll</HintPath>
+    <Reference Include="BitMiracle.LibTiff.NET, Version=2.4.639.0, Culture=neutral, PublicKeyToken=53879b3e20e7a7d6, processorArchitecture=MSIL">
+      <HintPath>..\packages\BitMiracle.LibTiff.NET.2.4.639\lib\net40\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
     <Reference Include="CellToolDK">
       <HintPath>..\..\CellToolDK\CellToolDK\bin\Debug\CellToolDK.dll</HintPath>
@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
